@@ -13,7 +13,7 @@ JOIN invoice ON invoicedetails.invoice_invoice_id = invoice.invoice_id
 JOIN clientt ON invoicedetails.clientt_clientt_id = clientt.clientt_id
 WHERE clientt.documenttype_documenttype_id =1 AND clientt.clientt_number ='1017261895';
 -- ----------------------------------------------------------------------
--- Consultar el provedor actual
+-- Consultar el provedor actual de un producto
 -- ----------------------------------------------------------------------
 SELECT supplier.supp_name, product.product_name
 FROM  product
