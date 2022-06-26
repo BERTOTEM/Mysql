@@ -1,5 +1,5 @@
 -- ----------------------------------------------------------
--- Author julian mazo 
+-- Author julian mazo jrtma34@gmail.com
 -- Version: 0.0.0
 -- ----------------------------------------------------------
 -- -----------------------------------------------------
@@ -7,6 +7,16 @@
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS storejr DEFAULT CHARACTER SET utf8mb4 ;
 USE storejr ;
+
+
+
+CREATE TABLE IF NOT EXISTS Action_supp (
+  id_Action_supp INT NOT NULL AUTO_INCREMENT,
+  product VARCHAR(100) NULL,
+  supplier VARCHAR(100) NULL,
+  fecha DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_Action_supp));
+
 
 -- -----------------------------------------------------
 -- Table store
@@ -176,7 +186,13 @@ VALUES ("jose antonio",'3003413898');
 INSERT INTO supplier ( supp_name, supp_phone)
 VALUES ("antonio mazo",'3003413898');
 INSERT INTO supplier ( supp_name, supp_phone)
-VALUES ("angelica ceurvo",'3003413898');
+VALUES ("angelica cuervo",'3003413898');
+INSERT INTO supplier ( supp_name, supp_phone)
+VALUES ("angelica marin",'3003413898');
+INSERT INTO supplier ( supp_name, supp_phone)
+VALUES ("david rodriguez",'3003413898');
+INSERT INTO supplier ( supp_name, supp_phone)
+VALUES ("julian mazo",'3003413898');
 
 -- -----------------------------------------------------
 -- INSERTING product
@@ -200,6 +216,25 @@ INSERT INTO product ( supp_supp_id, product_name,product_price)
 VALUES (3,'lentejas',800);
 INSERT INTO product ( supp_supp_id, product_name,product_price)
 VALUES (3,'garbanzos',700);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (4,'salchichas',5000);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (4,'galletas',2000);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (4,'tostadas',2500);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (5,'papas criollas',800);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (5,'harina',2000);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (5,'sardina',2100);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (6,'quineo',600);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (6,'frijol negro',800);
+INSERT INTO product ( supp_supp_id, product_name,product_price)
+VALUES (6,'frijol blanco',700);
+
 
 -- -----------------------------------------------------
 -- INSERTING invoice
@@ -221,17 +256,29 @@ VALUES (1,1,2);
 INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
 VALUES (1,1,3);
 INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
+VALUES (1,1,10);
+INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
+VALUES (1,1,12);
+INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
 VALUES (2,2,4);
 INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
 VALUES (2,2,5);
 INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
 VALUES (2,2,6);
 INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
+VALUES (2,2,11);
+INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
+VALUES (2,2,13);
+INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
 VALUES (3,3,7);
 INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
 VALUES (3,3,8);
 INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
 VALUES (3,3,9);
+INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
+VALUES (3,3,14);
+INSERT INTO invoicedetails ( invoice_invoice_id,clientt_clientt_id, product_product_id)
+VALUES (3,3,15);
 ////////////////////
 -- -----------------------------------------------------
 -- Soft delete
@@ -239,36 +286,48 @@ VALUES (3,3,9);
 
 UPDATE invoicedetails
 SET delete_at = NOW()
-WHERE invoicedetails_id = 1;
+WHERE invoicedetails_id = 6;
 
 UPDATE invoicedetails
 SET delete_at = NOW()
-WHERE invoicedetails_id = 4;
+WHERE invoicedetails_id = 3;
 
 -- -----------------------------------------------------
 -- Hard delete
 -- -----------------------------------------------------
 DELETE FROM invoicedetails
-WHERE invoicedetails_id = 1;
+WHERE invoicedetails_id = 6;
 
 DELETE FROM invoicedetails
-WHERE invoicedetails_id = 4;
+WHERE invoicedetails_id = 5;
+
+
+-- -----------------------------------------------------
+-- disparador para ver el historial de provedores por su id
+-- -----------------------------------------------------
+delimiter //
+create trigger log_Action_supp after update on product
+for each row begin
+  insert into Action_supp(product,supplier) value (NEW.product_name,NEW.supp_supp_id);
+end//
+delimiter ;
 
 -- -----------------------------------------------------
 -- Update product_name and its supplier
 -- -----------------------------------------------------
 
 UPDATE product
-SET product_name = 'salchichon', supp_supp_id = 2
-WHERE product_id = 1;
+SET product_name = 'arepas', supp_supp_id = 4
+WHERE product_id = 3;
 
 UPDATE product
 SET product_name = 'papa criolla', supp_supp_id = 1
 WHERE product_id = 4;
 
 UPDATE product
-SET product_name = 'Cerveza', supp_supp_id = 3
-WHERE product_id = 9
+SET product_name = 'arroz', supp_supp_id = 4
+WHERE product_id = 5;
+
 
 
 

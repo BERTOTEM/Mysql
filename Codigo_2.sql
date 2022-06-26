@@ -1,6 +1,5 @@
 -- ----------------------------------------------------------
--- Author julian mazo - jpac.647@gmail.com
--- Version: 0.0.0
+-- Author julian mazo - jrtma34@gmail.com
 -- ----------------------------------------------------------
 -- -----------------------------------------------------
 -- ----------------------------------------------------------
@@ -14,18 +13,20 @@ JOIN invoice ON invoicedetails.invoice_invoice_id = invoice.invoice_id
 JOIN clientt ON invoicedetails.clientt_clientt_id = clientt.clientt_id
 WHERE clientt.documenttype_documenttype_id =1 AND clientt.clientt_number ='1017261895';
 -- ----------------------------------------------------------------------
--- Consult products by name, which must show who has been their supplier.
+-- Consultar el provedor actual
 -- ----------------------------------------------------------------------
-
 SELECT supplier.supp_name, product.product_name
 FROM  product
-JOIN supplier ON product.supp_supp_id = supplier.supp_id
+inner JOIN supplier ON product.supp_supp_id = supplier.supp_id
 WHERE product.product_name = 'arepas';
 
-
-
-
-
+-- ----------------------------------------------------------------------
+-- Historial de provedores antiguos de un producto
+-- ----------------------------------------------------------------------
+SELECT action_supp.product, supplier.supp_name,action_supp.fecha
+FROM  action_supp
+inner JOIN supplier ON action_supp.id_Action_supp = supplier.supp_id
+WHERE action_supp.product = 'arepas';
 
 
 
